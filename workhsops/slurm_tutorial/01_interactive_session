@@ -1,0 +1,2 @@
+module load python
+srun -p development,htc -c 1 --mem=6G --pty $SHELL

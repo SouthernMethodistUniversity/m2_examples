@@ -1,0 +1,1 @@
+srun -p development,htc -c 1 --mem=6G python pi_monte_carlo.py 1000
