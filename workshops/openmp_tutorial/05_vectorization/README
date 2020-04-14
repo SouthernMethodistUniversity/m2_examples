@@ -1,0 +1,8 @@
+module purge
+module load gcc-7.3 armadillo
+g++ daxpy.cpp -Wall -std=c++11 -O1 -larmadillo -o daxpy
+g++ daxpy.cpp -Wall -std=c++11 -fopenmp -O1 -larmadillo -o daxpy_openmp
+srun -p development,htc --mem=6G -c 1 ./daxpy 2048 2048 2048
+srun -p development,htc --mem=6G -c 1 ./daxpy_openmp 2048 2048 2048
+srun -p development,htc --mem=6G -c 2 ./daxpy_openmp 2048 2048 2048
+
