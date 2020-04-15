@@ -1,7 +1,7 @@
 module purge
 module load gcc-7.3 armadillo
-g++ dgemm.cpp -Wall -std=c++11 -O1 -larmadillo -o dgemm
-g++ dgemm.cpp -Wall -std=c++11 -fopenmp -O1 -larmadillo -o dgemm_openmp
+g++ dgemm.cpp -Wall -std=c++11 -O3 -larmadillo -o dgemm
+g++ dgemm.cpp -Wall -std=c++11 -fopenmp -O3 -larmadillo -o dgemm_openmp
 srun -p development,htc --mem=6G -c 1 ./dgemm 2048 2048 2048
 srun -p development,htc --mem=6G -c 1 ./dgemm_openmp 2048 2048 2048
 srun -p development,htc --mem=6G -c 2 ./dgemm_openmp 2048 2048 2048
