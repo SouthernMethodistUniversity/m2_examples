@@ -15,8 +15,11 @@ int main(int argc, char* argv[]) {
     arma::mat B(n, p, arma::fill::randu);
     arma::mat C(m, p, arma::fill::zeros);
     arma::mat D(m, p, arma::fill::zeros);
-    D = A*B;
     auto t1 = std::chrono::high_resolution_clock::now();
+    D = A*B;
+    auto t2 = std::chrono::high_resolution_clock::now();
+    auto duration_armadillo = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count();
+    t1 = std::chrono::high_resolution_clock::now();
     #pragma omp parallel for simd
     for (unsigned long int k = 0; k < p; ++k) { 
         for (unsigned long int j = 0; j < n; ++j) {
@@ -25,9 +28,10 @@ int main(int argc, char* argv[]) {
             }
         }
     }
-    auto t2 = std::chrono::high_resolution_clock::now();
-    std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
-              << " ms" << std::endl;
+    t2 = std::chrono::high_resolution_clock::now();
+    auto duration_openmp = std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count();
+    std::cout << "Armadillo: " << duration_armadillo << " ms" << std::endl;
+    std::cout << "OpenMP: " << duration_openmp << " ms" << std::endl;
     if (arma::approx_equal(C, D, "absdiff", 1E-8)) {
         std::cout << "Success!" << std::endl;
     } else {
