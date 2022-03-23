@@ -1,0 +1,13 @@
+# Load environment modules
+module purge
+module load intel-17.0.4
+module load cuda arrayfire
+
+# Build executables using make
+make all
+
+# Run executables on specific compute nodes
+srun -t 2 -p development,standard-mem-s,standard-mem-m,standard-mem-l -x k001 --exclusive --mem=250G ./blas_cpu
+srun -t 2 -p development,gpgpu-1 --exclusive --gres=gpu:1 --mem=250G ./blas_gpu
+srun -t 2 -p mic --exclusive --mem=374G ./blas_mic
+
